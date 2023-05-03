@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <title>Document</title>
+    <script src="./jsConfig/fetch.js"></script>
+</head>
+<body>
+    <nav class="bg-blue-500 py-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <a href="#" class="text-white font-bold text-xl">Dashboard</a>
+            <ul class="flex">
+                <li>
+                    <a href="#" class="text-white px-4 hover:text-gray-200">Profile</a>
+                </li>
+                <li>
+                    <a href="./data-pelanggan.html" class="text-white px-4 hover:text-gray-200">Data Pelanggan</a>
+                </li>
+                <li>
+                    <a href="./data-bayar.html" class="text-white px-4 hover:text-gray-200">Data Pembayaran</a>
+                </li>
+                <li>
+                    <a href="./produk.html" class="text-white px-4 hover:text-gray-200">Produk</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container mx-auto mt-10">
+        <h1 class="text-3xl font-bold mb-6">CRUD Barang Dipesan</h1>
+        <div class="flex justify-end mb-4">
+            <button id="add-item-btn" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none">Tambah Barang</button>
+        </div>
+        <table id="items-table" class="w-full">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="py-2 px-4 text-left">#</th>
+                    <th class="py-2 px-4 text-left">Nama Barang</th>
+                    <th class="py-2 px-4 text-left">Jumlah</th>
+                    <th class="py-2 px-4 text-left">Harga</th>
+                    <th class="py-2 px-4 text-left">Total Harga</th>
+                    <th class="py-2 px-4 text-left">Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="items-tbody">
+                <!-- Render table rows dynamically using JavaScript -->
+            </tbody>
+        </table>
+    </div>       
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <title>Document</title>
+</head>
+<body>
+    
+    <nav class="bg-blue-500 py-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <a href="#" class="text-white font-bold text-xl">Dashboard</a>
+            <ul class="flex">
+                <li>
+                    <a href="./index.html" class="text-white px-4 hover:text-gray-200">Profile</a>
+                </li>
+                <li>
+                    <a href="./data-pelanggan.html" class="text-white px-4 hover:text-gray-200">Data Pelanggan</a>
+                </li>
+                <li>
+                    <a href="./produk.html" class="text-white px-4 hover:text-gray-200">Produk</a>
+                </li>
+                <li>
+                    <a href="" class="text-white px-4 hover:text-gray-200"></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="col-span-4 bg-gray-100 p-4 justify-center">
+        <h2 class="text-lg font-bold mb-4 text-center">Data Pembayaran</h2>
+        <div class="flex overflow-auto">
+        <table class="table-auto mx-auto w-full sm:w-3/4 md:w-4/5 lg:w-3/4 xl:w-4/5">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">#</th>
+                    <th class="px-4 py-2">Tanggal</th>
+                    <th class="px-4 py-2">Jumlah</th>
+                    <th class="px-4 py-2">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="border px-4 py-2">1</td>
+                    <td class="border px-4 py-2">1 Mei 2023</td>
+                    <td class="border px-4 py-2">Rp 100.000</td>
+                    <td class="border px-4 py-2">Dibayar</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2">2</td>
+                    <td class="border px-4 py-2">2 Mei 2023</td>
+                    <td class="border px-4 py-2">Rp 150.000</td>
+                    <td class="border px-4 py-2">Dibayar</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2">3</td>
+                    <td class="border px-4 py-2">3 Mei 2023</td>
+                    <td class="border px-4 py-2">Rp 200.000</td>
+                    <td class="border px-4 py-2">Belum Dibayar</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+</div>
+</body>
+</html>
