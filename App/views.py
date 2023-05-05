@@ -1,7 +1,8 @@
 from app import app, db
 from models import User as UserModels, Product as ProductModels
 from flask import render_template, request, session, redirect, abort, url_for, render_template
-import time
+import time, os
+from werkzeug.utils import secure_filename
 
 @app.before_request
 def before_request():
@@ -24,8 +25,6 @@ def show_product_by_id(post_id):
 
 @app.route("/login", methods=['GET', 'POST'])
 def admin_login_form():
-    if session['user'] != 'admin':
-        return redirect(url_for('admin_dashboard'))
 
     if request.method == 'POST':
         email = request.form['email']
@@ -47,68 +46,79 @@ def admin_logout():
 def admin_dashboard():
     if session['user'] != 'admin':
         return redirect(url_for('admin_login_form'))
-    return  render_template('dashboard.html', user=session['user'])
+
+    db_items = db.session.query(ProductModels).all()
+
+    return  render_template('dashboard.html', products=db_items)
 
 
-@app.route("/dashboard/product")
-def admin_dashboard_all_product():
-    if session['user'] != 'admin':
-        return redirect(url_for('admin_login_form'))
-    return "<p>show dashboard menu</p>"
 
-
-@app.route("/dashboard/add-product", methods=["GET", "POST"])
+@app.route("/dashboard/add-product", methods=["POST"])
 def admin_dashboard_add_product():
     if session['user'] != 'admin':
         return redirect(url_for('admin_login_form'))
+
     
-    if request.method == "POST":
-        title = request.form['title']
-        image = request.form['images']
-        price = request.form['price']
-        desc = request.form['desc']
-        stock = request.form['stock']
-        db_item = ProductModels(
-            title=title,
-            image=image,
-            price=price,
-            desc=desc,
-            stock=stock,
-        )
-        db.session.add(db_item)
-        db.session.commit()
-        db.session.refresh(db_item)
-        return redirect(url_for('admin_dashboard_all_product'))
+    f = request.files['fimg']
+    filename = secure_filename(f.filename)
+    f.save(os.path.join('static', 'upload', 'images', filename))
+    
 
-    return "<p>Here form to login</p>"
+    title = request.form['ftitle']
+    hModal = request.form['fmodal']
+    hJual = request.form['fjual']
+    desc = request.form['fdesc']
+    stock = request.form['fstock']
+    db_item = ProductModels(
+        title=title,
+        image=filename,
+        price1=hModal,
+        price2=hJual,
+        desc=desc,
+        stock=stock,
+    )
+    db.session.add(db_item)
+    db.session.commit()
+    db.session.refresh(db_item)
+    return redirect(url_for('admin_dashboard'))
 
 
-@app.route("/dashboard/edit-product/<int:product_id>")
+
+@app.route("/dashboard/edit-product/<int:product_id>", methods=["POST"])
 def admin_dashboard_edit_product(product_id):
     if session['user'] != 'admin':
         return redirect(url_for('admin_login_form'))
     
-    db_item = db.query(ProductModels).filter(ProductModels.id == product_id).first()
+    db_item = db.session.query(ProductModels).filter(ProductModels.id == product_id).first()
     if db_item is None:
         raise "<p>Error Product Not Found</p>"
     
-    if request.method == "POST":
-        db_item.title = request.form['title']
-        db_item.images = request.form['images']
-        db_item.price = request.form['price']
-        db_item.desc = request.form['desc']
-        db_item.stock = request.form['stock']
-        db_item.updateAt = time.time()
-        db.session.commit()
-        db.session.refresh(db_item)
-        return redirect(url_for('admin_dashboard_all_product'))
+    f = request.files['fimg']
+    filename = secure_filename(f.filename)
+    print(filename)
+    if filename != "":
+        f.save(os.path.join('static', 'upload', 'images', filename))
+        db_item.image = filename
 
-    return "<p>Here form to Edit Product</p>"
+    db_item.title = request.form['ftitle']
+    db_item.price1 = request.form['fmodal']
+    db_item.price2 = request.form['fjual']
+    db_item.desc = request.form['fdesc']
+    db_item.stock = request.form['fstock']
+    db_item.updateAt = time.time()
+    db.session.commit()
+    db.session.refresh(db_item)
+    return redirect(url_for('admin_dashboard'))
 
 
-@app.route("/dashboard/delete-product/<int:product_id>")
+@app.route("/dashboard/delete-product/<int:product_id>", methods=["POST"])
 def admin_dashboard_delete_product(product_id):
-    return "<p>Here form to login</p>"
+    db_item = db.session.query(ProductModels).filter(ProductModels.id == product_id).first()
+    if db_item is None:
+        return f"<p>Item not found with id {product_id}</p>"
+    db.session.delete(db_item)
+    db.session.commit()
+    return redirect(url_for('admin_dashboard'))
 
 # ===============================================
 

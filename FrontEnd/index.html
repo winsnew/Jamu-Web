@@ -51,11 +51,11 @@
             <table class="min-w-max w-full table-auto">
               <thead>
                 <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                  <th class="py-3 px-6 text-left">Image</th>
-                  <th class="py-3 px-6 text-left">Product Name</th>
-                  <th class="py-3 px-6 text-center">Price</th>
-                  <th class="py-3 px-6 text-center">Stock</th>
-                  <th class="py-3 px-6 text-center">Actions</th>
+                  <th class="py-3 px-6 text-left">Gambar</th>
+                  <th class="py-3 px-6 text-left">Nama Produk</th>
+                  <th class="py-3 px-6 text-center">Harga</th>
+                  <th class="py-3 px-6 text-center">Stok</th>
+                  <th class="py-3 px-6 text-center">Edit</th>
                 </tr>
               </thead>
               <tbody class="text-gray-600 text-sm font-light">
@@ -66,18 +66,18 @@
                     </div>
                   </td>
                   <td class="py-3 px-6 text-left">Produk 1</td>
-                  <td class="py-3 px-6 text-center">$10</td>
+                  <td class="py-3 px-6 text-center">Rp10000</td>
                   <td class="py-3 px-6 text-center">
                     20
                   </td>
                   <td class="py-3 px-6 text-center">
                     <div class="">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         <i class="fa-regular fa-pen-to-square"></i>
                       </button>
-                      <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                      <button type="button" class="btn btn-primary bg-green-500" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
                         <i class="fa-solid fa-trash"></i>
-                      </button>
+                      </button>                      
                     </div>
                   </td>
                 </tr>
@@ -95,17 +95,17 @@
       <div class="modal-body">
         <form>
           <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Image</label>
+            <label for="recipient-name" class="col-form-label">Gambar</label>
             <input class="form-control" type="file" id="formFile">
               
               
           </div>
           <div class="mb-3">
-            <label for="message-text" class="col-form-label">Title</label>
+            <label for="message-text" class="col-form-label">Judul</label>
             <input type="text" class="form-control" id="recipient-name">
           </div>
           <div class="mb-3">
-            <label for="message-text" class="col-form-label">Description</label>
+            <label for="message-text" class="col-form-label">Deskripsi</label>
             <textarea class="form-control" id="message-text"></textarea>
           </div>
           <div class="mb-3 form-outline">
@@ -118,13 +118,13 @@
           </div>
           <div class="mb-3 form-outline">
             <input value="50" type="number" id="typeNumber" class="form-control" />
-            <label class="form-label" for="typeNumber">Stock</label>
+            <label class="form-label" for="typeNumber">Stok</label>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-primary">Simpan</button>
       </div>
     </div>
   </div>
@@ -135,6 +135,11 @@
         </div>
 
           
+    </div>
+    <div class=" relative float-right">
+        <div class="pr-20 justify-center">
+          <button type="button" class="btn btn-primary" class="border rounded-full bg-blue-500 text-zinc-50">Tambah Pesanan</button>
+        </div>
     </div>
 
 

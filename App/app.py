@@ -11,5 +11,6 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+app.config['UPLOAD_FOLDER'] = 'image'
 
 from views import *
