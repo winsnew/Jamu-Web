@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 def before_request():
     session.setdefault('user', None)
 
+
 # Product routes ===============================
 
 @app.route("/")
@@ -19,7 +20,6 @@ def show_all_product():
 def show_product_by_id(post_id):
     return f'Post {post_id}'
 
-# ===============================================
 
 # Admin Routes ==================================
 
@@ -120,13 +120,58 @@ def admin_dashboard_delete_product(product_id):
     db.session.commit()
     return redirect(url_for('admin_dashboard'))
 
-# ===============================================
 
 
 # CART ROUTES ====================================
 
 @app.route("/keranjang")
 def cart():
-    return
+    items = session.get('keranjang', [])
+    total = 0
+    for item in items:
+        total += item['harga']
+    return render_template('keranjang.html', items=items, total=total)
+
+@app.route("/add-to-cart", methods=["POST"])
+def add_to_cart():
+    cart = session.get('keranjang', [])
+    cart.append({
+        "id": request.form['fid'],
+        "title": request.form['ftitle'],
+        "jumlah": request.form['fjumlah'],
+        "harga": request.form['fharga'],
+        "total": int(request.form['fjumlah']) * int(request.form['fharga']),
+    })
+    session['keranjang'] = cart
+    print(session['keranjang'])
+    return redirect(url_for('show_all_product'))
+
+@app.route("/delete-cart-all/")
+def delete_cart_all():
+    session.pop('keranjang', None)
+    return redirect(url_for('show_all_product'))
+
+@app.route("/delete-cart/<int:item_id>", methods=["POST"])
+def delete_cart(item_id):
+    for i, item in enumerate(session.get('keranjang', [])):
+        if int(item['id']) == item_id:
+            print("found")
+            cart = session.get('keranjang', [])
+            cart.pop(i)
+            session['keranjang'] = cart
+            break
+    return redirect(url_for('cart'))
+
+
+
+# Checkout =======================================
+
+@app.route("/checkout")
+def cart():
+    items = session.get('keranjang', [])
+    total = 0
+    for item in items:
+        total += item['harga']
+    return render_template('keranjang.html', items=items, total=total)
 
 # ================================================
