@@ -10,7 +10,7 @@ class User(db.Model):
     password = db.Column(db.String(100))
     createdAt = db.Column(db.Integer, default=time.time()) # unix time format
     updateAt = db.Column(db.Integer, default=time.time()) # unix time format
-
+d
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True, index=True)
