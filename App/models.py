@@ -16,7 +16,8 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True, index=True)
     title = db.Column(db.String(100))
     image = db.Column(db.String(200))
-    price = db.Column(db.Integer)
+    price1 = db.Column(db.Integer)
+    price2 = db.Column(db.Integer)
     desc = db.Column(db.String(100))
     stock = db.Column(db.Integer)
     createdAt = db.Column(db.Integer, default=time.time()) # unix time format

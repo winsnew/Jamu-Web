@@ -1,13 +1,18 @@
 from app import app, db
-from models import UserModels, ProductModels
+from models import User as UserModels, Product as ProductModels
 from flask import render_template, request, session, redirect, abort, url_for, render_template
 import time
+
+@app.before_request
+def before_request():
+    session.setdefault('user', None)
 
 # Product routes ===============================
 
 @app.route("/")
 def show_all_product():
-    return "<p>List product bla bla bla</p>"
+    db_items = db.session.query(ProductModels).all()
+    return render_template('product.html', products=db_items)
 
 @app.route("/product/<int:post_id>")
 def show_product_by_id(post_id):
@@ -19,28 +24,30 @@ def show_product_by_id(post_id):
 
 @app.route("/login", methods=['GET', 'POST'])
 def admin_login_form():
-    print(request.method)
+    if session['user'] != 'admin':
+        return redirect(url_for('admin_dashboard'))
+
     if request.method == 'POST':
         email = request.form['email']
         pwd = request.form['pwd']
         if email == 'admin' and pwd == 'admin':
             session['user'] = 'admin'
             print("login sucess")
-            return "<p> Logined </p>"
+            return redirect(url_for('admin_dashboard'))
     return render_template('form.html')
 
 
 @app.route("/logout")
 def admin_logout():
     session.pop('user', None)
-    return redirect(url_for('index'))
+    return redirect(url_for('show_all_product'))
 
 
 @app.route("/dashboard")
 def admin_dashboard():
     if session['user'] != 'admin':
         return redirect(url_for('admin_login_form'))
-    return "<p>show dashboard menu</p>"
+    return  render_template('dashboard.html', user=session['user'])
 
 
 @app.route("/dashboard/product")
@@ -57,20 +64,20 @@ def admin_dashboard_add_product():
     
     if request.method == "POST":
         title = request.form['title']
-        images = request.form['images']
+        image = request.form['images']
         price = request.form['price']
         desc = request.form['desc']
         stock = request.form['stock']
         db_item = ProductModels(
             title=title,
-            images=images,
+            image=image,
             price=price,
             desc=desc,
             stock=stock,
         )
-        db.add(db_item)
-        db.commit()
-        db.refresh(db_item)
+        db.session.add(db_item)
+        db.session.commit()
+        db.session.refresh(db_item)
         return redirect(url_for('admin_dashboard_all_product'))
 
     return "<p>Here form to login</p>"
@@ -92,8 +99,8 @@ def admin_dashboard_edit_product(product_id):
         db_item.desc = request.form['desc']
         db_item.stock = request.form['stock']
         db_item.updateAt = time.time()
-        db.commit()
-        db.refresh(db_item)
+        db.session.commit()
+        db.session.refresh(db_item)
         return redirect(url_for('admin_dashboard_all_product'))
 
     return "<p>Here form to Edit Product</p>"
@@ -109,6 +116,7 @@ def admin_dashboard_delete_product(product_id):
 # CART ROUTES ====================================
 
 @app.route("/keranjang")
-def 
+def cart():
+    return
 
 # ================================================

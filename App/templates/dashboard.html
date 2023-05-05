@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Mengimpor Tailwind CSS dari CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="bg-blue-500 py-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <a href="#" class="text-white font-bold text-xl">Dashboard</a>
+            <ul class="flex">
+                <li>
+                    <a href="#" class="text-white px-4 hover:text-gray-200">Profile</a>
+                </li>
+                <li>
+                    <a href="./data-pelanggan.html" class="text-white px-4 hover:text-gray-200">Data Pelanggan</a>
+                </li>
+                <li>
+                    <a href="./data-bayar.html" class="text-white px-4 hover:text-gray-200">Data Pembayaran</a>
+                </li>
+                <li>
+                    <a href="./produk.html" class="text-white px-4 hover:text-gray-200">Produk</a>
+                </li>
+                <li>
+                    <a href="./keranjang.html" class="text-white px-4 hover:text-gray-200">link</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Layout grid -->
+    <div class="grid grid-cols-12 gap-4 p-4">
+        <!-- Isian profil -->
+        <div class="col-span-4 bg-gray-100 p-4">
+            <h2 class="text-lg font-bold mb-4">Profil</h2>
+            <p class="mb-2"><strong>Nama:</strong> {{ user }}</p>
+            <p class="mb-2"><strong>Email:</strong> {{ user }}</p>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-full mt-4">Edit Profil</button>
+        </div>
+</div>
+
+</body>
+</html>
