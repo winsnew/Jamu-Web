@@ -1,5 +1,5 @@
 from app import app, db
-from models import User as UserModels, Product as ProductModels, Order as OrderModels, OrderItem as OrderItemModels
+from models import Product as ProductModels, Order as OrderModels, OrderItem as OrderItemModels
 from flask import render_template, request, session, redirect, abort, url_for, render_template
 import time, os, random
 from pytz import timezone
@@ -51,7 +51,7 @@ def admin_dashboard():
 
     db_items = db.session.query(ProductModels).all()
 
-    return  render_template('dashboard.html', products=db_items)
+    return  render_template('dashboard.html', products=db_items, hpp=session['hpp'])
 
 @app.route("/dashboard/add-hpp", methods=['POST'])
 def admin_dashboard_add_hpp():
@@ -62,10 +62,11 @@ def admin_dashboard_add_hpp():
     biayaOperasional = request.form['bo'] # Biaya Operasional
     biayaPengemasan = request.form['bpeng'] # Biaya Pengemasan
     jumlahProduct = request.form['jmlh']
-    totalBiaya = biayaBahanPokok + biayaOperasional + biayaPengemasan / jumlahProduct
+    totalBiaya = int(int(biayaBahanPokok) + int(biayaOperasional) + int(biayaPengemasan) / int(jumlahProduct))
+    print(totalBiaya)
     session['hpp'] = totalBiaya
 
-    return  redirect(url_for(admin_dashboard))
+    return  redirect(url_for('admin_dashboard'))
 
 @app.route("/dashboard/add-product", methods=["POST"])
 def admin_dashboard_add_product():
