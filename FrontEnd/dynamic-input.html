@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="tombolTambahInput" onclick="tambahInput()">Tambah Input</button>
+    <div id="daftarInput">
+        
+    </div>
+
+    <script>
+        function tambahInput() {
+            // membuat elemen input baru
+            var input = document.createElement("input");
+            
+            // mengatur atribut dan ID untuk elemen input
+            var id = document.getElementById("daftarInput").childElementCount + 1;
+            input.setAttribute("type", "text");
+            input.setAttribute("id", "input-" + id);
+            
+            // menambahkan elemen input ke dalam elemen div yang telah diatur sebelumnya
+            document.getElementById("daftarInput").appendChild(input);
+        }
+    </script>
+</body>
+</html>

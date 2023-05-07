@@ -11,21 +11,25 @@
     <script src="./jsConfig/fetch.js"></script>
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="bg-blue-500 py-4">
         <div class="container mx-auto flex justify-between items-center px-4">
-            <a href="#" class="text-white font-bold text-xl">Dashboard</a>
+            <a href="#" class="text-white font-bold text-xl">JamuDotWeb</a>
             <ul class="flex">
                 <li>
-                    <a href="#" class="text-white px-4 hover:text-gray-200">Profile</a>
+                    <a href="/" class="text-white px-4 hover:text-gray-200">Home</a>
                 </li>
                 <li>
-                    <a href="./data-pelanggan.html" class="text-white px-4 hover:text-gray-200">Data Pelanggan</a>
+                    <a href="/#product" class="text-white px-4 hover:text-gray-200">Product</a>
                 </li>
                 <li>
-                    <a href="./data-bayar.html" class="text-white px-4 hover:text-gray-200">Data Pembayaran</a>
+                    <a href="/#contact" class="text-white px-4 hover:text-gray-200">Contact Us</a>
                 </li>
                 <li>
-                    <a href="./produk.html" class="text-white px-4 hover:text-gray-200">Produk</a>
+                    <a href="/keranjang" class="text-white px-4 hover:text-gray-200">Keranjang</a>
+                </li>
+                <li>
+                    <a href="/login" class="text-white px-4 hover:text-gray-200">Keranjang</a>
                 </li>
             </ul>
         </div>
@@ -68,7 +72,7 @@
                     <td id="harga-{{ item.id }}" class="py-3 px-6 text-center">
                         {{ item.harga }}
                     </td>
-                    <td id="tharga-{{ item.id }}" class="py-3 px-6 text-center">
+                    <td id="tharga-{{ item.id }}" class="py-3 px-6 text-center cart-item-total">
                         {{ item.total }}
                     </td>
                     <td class="py-3 px-6 text-center">
@@ -83,8 +87,8 @@
               </tbody>
         </table>
 
-        <form action="">
-            <input name="ftotal" type="hidden" value="{{ total }}">
+        <form action="/checkout" method="POST">
+            <input name="ftotal" id="totalPrice" type="hidden" value="0">
             <div class="flex justify-end mt-4">
                 <button type="submit" id="add-item-btn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none">
                     Checkout
@@ -93,6 +97,18 @@
         </form>
     </div>
     <script>
+        console.log("test")
+        cartItemTotals = document.querySelectorAll(".cart-item-total");
+        console.log(cartItemTotals.innerHTML)
+        total = 0;
+        cartItemTotals.forEach(function(item) {
+            total += parseInt(item.innerHTML )
+        });
+        // console.log(total);
+        totalPrice = document.getElementById("totalPrice");
+        totalPrice.innerHTML = total;
+
+
         function updateTotal(method, ID){
             totalNow = document.getElementById("product-qty-"+ID).innerHTML;
             if(method == "+"){
@@ -106,8 +122,19 @@
             }
             totalHarga = document.getElementById("tharga-"+ID);
             harga = document.getElementById("harga-"+ID).innerHTML;
-
             totalHarga.innerHTML = parseInt(total.innerHTML) * parseInt(harga)
+            // console.log(parseInt(total.innerHTML),parseInt(harga))
+
+            console.log("test")
+            cartItemTotals = document.querySelectorAll(".cart-item-total");
+            total = 0;
+            cartItemTotals.forEach(function(item) {
+                // console.log(item.innerHTML)
+                total += parseInt(item.innerHTML )
+            });
+            console.log(total);
+            totalPrice = document.getElementById("totalPrice");
+            totalPrice.value = total;
         }
     </script>
 </body>

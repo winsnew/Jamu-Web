@@ -1,12 +1,15 @@
 from app import app, db
-from models import User as UserModels, Product as ProductModels
+from models import User as UserModels, Product as ProductModels, Order as OrderModels, OrderItem as OrderItemModels
 from flask import render_template, request, session, redirect, abort, url_for, render_template
-import time, os
+import time, os, random
+from pytz import timezone
+from datetime import datetime
 from werkzeug.utils import secure_filename
 
 @app.before_request
 def before_request():
     session.setdefault('user', None)
+    session.setdefault('hpp', 0)
 
 
 # Product routes ===============================
@@ -25,7 +28,6 @@ def show_product_by_id(post_id):
 
 @app.route("/login", methods=['GET', 'POST'])
 def admin_login_form():
-
     if request.method == 'POST':
         email = request.form['email']
         pwd = request.form['pwd']
@@ -33,7 +35,7 @@ def admin_login_form():
             session['user'] = 'admin'
             print("login sucess")
             return redirect(url_for('admin_dashboard'))
-    return render_template('form.html')
+    return render_template('login.html')
 
 
 @app.route("/logout")
@@ -51,7 +53,19 @@ def admin_dashboard():
 
     return  render_template('dashboard.html', products=db_items)
 
+@app.route("/dashboard/add-hpp", methods=['POST'])
+def admin_dashboard_add_hpp():
+    if session['user'] != 'admin':
+        return redirect(url_for('admin_login_form'))
 
+    biayaBahanPokok = request.form['bp'] # Biaya Bahan pokok
+    biayaOperasional = request.form['bo'] # Biaya Operasional
+    biayaPengemasan = request.form['bpeng'] # Biaya Pengemasan
+    jumlahProduct = request.form['jmlh']
+    totalBiaya = biayaBahanPokok + biayaOperasional + biayaPengemasan / jumlahProduct
+    session['hpp'] = totalBiaya
+
+    return  redirect(url_for(admin_dashboard))
 
 @app.route("/dashboard/add-product", methods=["POST"])
 def admin_dashboard_add_product():
@@ -126,11 +140,10 @@ def admin_dashboard_delete_product(product_id):
 
 @app.route("/keranjang")
 def cart():
+
     items = session.get('keranjang', [])
     total = 0
-    for item in items:
-        total += item['harga']
-    return render_template('keranjang.html', items=items, total=total)
+    return render_template('keranjang.html', items=items)
 
 @app.route("/add-to-cart", methods=["POST"])
 def add_to_cart():
@@ -166,12 +179,70 @@ def delete_cart(item_id):
 
 # Checkout =======================================
 
-@app.route("/checkout")
-def cart():
-    items = session.get('keranjang', [])
-    total = 0
-    for item in items:
-        total += item['harga']
-    return render_template('keranjang.html', items=items, total=total)
+@app.route("/checkout", methods=["GET", "POST"])
+def checkout():
+    if request.method == "POST":
+        print(request.form['ftotal'])
+        total = int(request.form['ftotal'])
+        return render_template('checkout.html', total=total)
+    else:
+        return "<p>Nothing here</p>"
 
-# ================================================
+@app.route("/checkout/success", methods=["POST"])
+def checkout_success():
+        fname = request.form['fname']
+        faddress = request.form['faddress']
+        fphone = request.form['fphone']
+        ftotal = request.form['ftotal']
+        while True:
+            randomID = random.randint(0, 99999999)
+            dummyCheck = db.session.query(OrderModels).filter(OrderModels.id == randomID).first()
+            if dummyCheck is None:
+                db_item = OrderModels(
+                    id=randomID,
+                    name=fname,
+                    address=faddress,
+                    phone=fphone,
+                    total=ftotal
+                )
+                db.session.add(db_item)
+                db.session.commit()
+                db.session.refresh(db_item)
+                break
+
+        orderId = db.session.query(OrderModels).filter
+        carts = session.get('keranjang', [])
+        for cart in carts:
+            cartDB = db.session.query(ProductModels).filter(ProductModels.id == cart['id']).first()
+            db_item = OrderItemModels(
+                product_id=cart['id'],
+                title=cart['title'],
+                price1=cartDB.price1,
+                price2=cart['harga'],
+                jumlah=cart['jumlah'],
+                total=cart['total'],
+                order_id=randomID
+            )
+            db.session.add(db_item)
+        db.session.commit()
+        db.session.refresh(db_item)
+
+        session.pop('keranjang', None)
+        return redirect(url_for('show_all_product'))
+
+# Transaction =====================================
+
+@app.route("/transaction")
+def trasaction():
+    transactions = db.session.query(OrderModels).join(OrderItemModels).group_by(OrderModels.id).order_by(db.func.count().desc()).all()
+    
+    # convert time
+    for transaction in transactions:
+        utc_time = datetime.utcfromtimestamp(transaction.createdAt)
+        print("utc time: ", utc_time)
+        jakarta_time = timezone('Asia/Jakarta').localize(utc_time)
+        print("jakarta time: ", jakarta_time)
+        transaction.createdAt = jakarta_time.strftime('%d %b %Y')
+        
+    return render_template("trasaction.html", transactions=transactions)
+
