@@ -55,8 +55,9 @@
                 {% for item in items %}
                     <tr class="border-b border-gray-100 hover:bg-gray-100">
                     <td class="py-3 px-6 text-left whitespace-nowrap">
-                        <div class="flex w-$10">
-                            <img src="https://cdn.yummy.co.id/content-images/images/$101015/sDVw4Y25ADlNepIidlqjbV0cYhKIgQBS-31363032373533303130d41d8cd98f00b$104e9800998ecf8427e.jpg?x-oss-process=image/format,webp">
+                        <div class="flex w-10">
+                            <img src="{{ url_for('static', filename='upload/images/'+ item.img) }}">
+
                         </div>
                     </td>
                     <td class="py-3 px-6 text-left">{{ item.title }}</td>

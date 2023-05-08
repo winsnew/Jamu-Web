@@ -151,6 +151,7 @@ def add_to_cart():
     cart = session.get('keranjang', [])
     cart.append({
         "id": request.form['fid'],
+        "img": request.form['fimg'],
         "title": request.form['ftitle'],
         "jumlah": request.form['fjumlah'],
         "harga": request.form['fharga'],

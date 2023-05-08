@@ -70,6 +70,7 @@
                     <h2 class="text-lg font-bold mt-2">{{ product.title }}</h2>
                     <p class="text-gray-600 mt-2">Rp. {{ "{:,}".format(product.price2) }}</p>
                     <form action="/add-to-cart" method="POST">
+                        <input name="fimg" type="hidden" value="{{ product.image }}">
                         <input name="fid" type="hidden" value="{{product.id }}">
                         <input name="ftitle" type="hidden" value="{{product.title }}">
                         <input name="fharga" type="hidden" value="{{product.price2 }}">
