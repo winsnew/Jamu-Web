@@ -226,6 +226,13 @@ def checkout_success():
                 order_id=randomID
             )
             db.session.add(db_item)
+
+            db_item_update = db.session.query(ProductModels).filter(ProductModels.id == cart['id']).first()
+            if db_item_update == None:
+                return f"id for {cart['id']} is not found"
+            db_item_update.stock -= int(cart['jumlah'])
+
+
         db.session.commit()
         db.session.refresh(db_item)
 
